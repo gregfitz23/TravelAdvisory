@@ -45,7 +45,7 @@
   {
     "routes": [
       {
-        "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Rd,+Bethesda,+MD&daddr=1913+Kenwood+Ave,+Alexandria,+VA&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&sll=38.980229,-77.060165&sspn=0.136112,0.617294&vpsrc=0&dirflg=r&ttype=dep&date=%%DATE%%&time=%%TIME%%&noexp=0&noal=0&sort=def&mra=ls&ie=UTF8&t=m&z=10&start=0&ei=2gq5Ur6vCdCrsgS65ICgCg&pw=2",
+        "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Road,+Bethesda,+MD&daddr=1913+Kenwood+Ave,+Alexandria,+VA&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&abauth=52c0dca4XEsXo4kWYdHioFSpPeumBYTUhN4&authuser=0&vps=4&output=js&ei=v9zAUv24GtCPsgSAnYHAAw&jsv=472d&sll=38.970087,-77.062912&sspn=0.137199,0.617294&vpsrc=0&dirflg=r&ttype=arr&date=%%DATE%%&time=%%TIME%%&noexp=0&noal=0&sort=def&mra=ls",
         "type": "googlemapsbus"
       }
     ]

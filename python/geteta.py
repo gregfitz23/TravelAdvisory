@@ -3,13 +3,19 @@ import urllib2
 import re
 import json
 import datetime
+import time
+from HTMLParser import HTMLParser
 
 GOOGLEMAPS_PATTERN = re.compile(r"in current traffic: (\d+) mins", re.I)
+GOOGLEMAPS_BUS_PATTERN = re.compile(r"altid=\\\"\d\\\".*title=\\\"(28A|25C|At 5|At 6|22a)\\\".*class=\\\"altroute-info\\\"\\x3e[\W]?(\d+:\d+[a|p]m)")
 
 ARDUINO_HOST = "http://fitzduino.local"
 ARDUINO_USER = "root"
 ARDUINO_PASSWORD = "Argerald"
 
+TIMESHIFT = datetime.timedelta(hours=19)
+FIRST_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 15)
+SECOND_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 30)
 
 class RouteData(object):
   def __init__(self, code, mins):
@@ -26,6 +32,25 @@ def get_minutes_from_google_maps(url):
   matches = GOOGLEMAPS_PATTERN.search(resp)
   if matches is not None:
     return int(matches.group(1))
+    
+def get_route_data_from_google_maps_bus(url):
+  handle = urllib.urlopen(url)
+  resp = handle.read()
+
+  matches = GOOGLEMAPS_BUS_PATTERN.search(resp)
+  if matches is not None:
+    now = datetime.datetime.now() + TIMESHIFT
+    route_name = matches.group(1)
+    depart_time_str = matches.group(2)
+    depart_time_struct = time.strptime(depart_time_str, "%I:%M%p")
+    
+    depart_time = datetime.datetime(now.year, now.month, now.day, depart_time_struct.tm_hour, depart_time_struct.tm_min)
+    
+    minutes = (depart_time - now).total_seconds()/60
+    
+    return RouteData(route_name, minutes)
+  else:
+    return RouteData("----", 60)
 
 
 def write_data(key, data):
@@ -43,10 +68,19 @@ def write_data(key, data):
   opener = urllib2.build_opener(handler)
 
   # use the opener to fetch a URL
-  print top_level_url + "put/" + key + "/" + str(data)
-  opener.open(top_level_url + "put/" + key + "/" + str(data))
+  data = str(data).ljust(4).replace(" ", "%20")
+  print top_level_url + "put/" + key + "/" + data
+  opener.open(top_level_url + "put/" + key + "/" + data)
 
-
+def cap_minutes(mins):
+  if mins > 60:
+    return 60
+  elif mins < 0:
+    return 0
+  else:
+    return mins
+    
+  
 
 def pick2(data):  
   first = second = None
@@ -81,16 +115,31 @@ for route in car_routes:
 first, second = pick2(car_results)
 
 write_data("CAR_0_CODE", first.code)
-write_data("CAR_0_MINS", first.mins)
+write_data("CAR_0_MINS", cap_minutes(first.mins))
 write_data("CAR_1_CODE", second.code)
-write_data("CAR_1_MINS", second.mins)
+write_data("CAR_1_MINS", cap_minutes(second.mins))
 
 
 
-# bus_routes = config_json["bus"]["routes"]
-# for route in bus_routes:
-#   if route["type"] == "googlemapsbus":
-#     x = 1
+bus_routes = config_json["bus"]["routes"]
 
+for route in bus_routes:
+  if route["type"] == "googlemapsbus":
+    now = datetime.datetime.now() + TIMESHIFT
+    d0 = now + FIRST_BUS_SHIFT
+    d1 = now + SECOND_BUS_SHIFT
+    
+    first_url = route["url"].replace("%%DATE%%", d0.strftime("%x")).replace("%%TIME%%", d0.strftime("%X"))
+    second_url = route["url"].replace("%%DATE%%", d1.strftime("%x")).replace("%%TIME%%", d1.strftime("%X"))
+
+    first = get_route_data_from_google_maps_bus(first_url)
+    second = get_route_data_from_google_maps_bus(second_url)
+    
+    first, second = pick2([first, second])
+    
+    write_data("BUS_0_CODE", first.code)
+    write_data("BUS_0_MINS", cap_minutes(first.mins))
+    write_data("BUS_1_CODE", second.code)
+    write_data("BUS_1_MINS", cap_minutes(second.mins))
 
 
