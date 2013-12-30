@@ -7,13 +7,14 @@ import time
 from HTMLParser import HTMLParser
 
 GOOGLEMAPS_PATTERN = re.compile(r"in current traffic: (\d+) mins", re.I)
+GOOGLEMAPS_SECONDARY_PATTERN = re.compile(r"\\x3cspan\\x3e(\d+) mins\\x3c/span\\x3e")
 GOOGLEMAPS_BUS_PATTERN = re.compile(r"altid=\\\"\d\\\".*title=\\\"(28A|25C|At 5|At 6|22a)\\\".*class=\\\"altroute-info\\\"\\x3e[\W]?(\d+:\d+[a|p]m)")
 
 ARDUINO_HOST = "http://fitzduino.local"
 ARDUINO_USER = "root"
 ARDUINO_PASSWORD = "Argerald"
 
-TIMESHIFT = datetime.timedelta(hours=19)
+TIMESHIFT = datetime.timedelta(hours=0)
 FIRST_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 15)
 SECOND_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 30)
 
@@ -32,6 +33,12 @@ def get_minutes_from_google_maps(url):
   matches = GOOGLEMAPS_PATTERN.search(resp)
   if matches is not None:
     return int(matches.group(1))
+  else:
+    matches = GOOGLEMAPS_SECONDARY_PATTERN.search(resp)
+    if matches is not None: 
+      return int(matches.group(1))
+    else:
+      print "Could not determine minutes from google maps request: " + url
     
 def get_route_data_from_google_maps_bus(url):
   handle = urllib.urlopen(url)
