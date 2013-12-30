@@ -10,8 +10,6 @@ ARDUINO_HOST = "http://fitzduino.local"
 ARDUINO_USER = "root"
 ARDUINO_PASSWORD = "Argerald"
 
-#\\x3cb\\x3e(\d+) mins\\x3c/b\\x3e
-
 
 class RouteData(object):
   def __init__(self, code, mins):
@@ -64,7 +62,7 @@ def pick2(data):
   
 
 # MAIN SCRIPT  
-config_json = json.loads(open("../traveladvisory.json", 'r').read())
+config_json = json.loads(open("../config/traveladvisory.json", 'r').read())
 
 # process car
 
