@@ -16,28 +16,28 @@
 
         "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Rd,+Bethesda,+MD&daddr=38.905595,-77.094326+to:1913+Kenwood+Ave,+Alexandria,+VA&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3B%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&abauth=52b90930Oer7Ulnqaey0Hd-v8sDukAxefdw&authuser=0&vps=6&output=js&ei=sKy5UuizGIa6swSDtIG4CA&jsv=472d&sll=38.896243,-77.062397&sspn=0.070809,0.154324&vpsrc=0&mra=dvme&mrsp=1&sz=13&via=1",
         "displayCode": "GEOr",
-        "adjustFactor": 1.7
+        "adjustFactor": 1
       },
       {
         "name": "George Washington Parkway via Clara Barton",
         "type": "googlemaps",
         "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Rd,+Bethesda,+MD&daddr=38.970354,-77.152863+to:George+Washington+Memorial+Pkwy+to:1913+Kenwood+Ave,+Alexandria,+VA&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3B%3BFXymUQIdsKBn-w%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&abauth=52b90930Oer7Ulnqaey0Hd-v8sDukAxefdw&authuser=0&vps=8&output=js&ei=y6y5Up7jHYa6swSDtIG4CA&jsv=472d&sll=38.967951,-77.081451&sspn=0.068068,0.308647&vpsrc=6&mra=dpe&mrsp=1&sz=12&via=1,2",
         "displayCode": "GEOc",
-        "adjustFactor": 1.7
+        "adjustFactor": 1
       },
       {
         "name": "495 via River Road",
         "type": "googlemaps",
         "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Rd,+Bethesda,+MD&daddr=I-495+S+to:I-495+S+to:1913+Kenwood+Ave,+Alexandria,+VA&output=js&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3BFU4lUgIdb-hl-w%3BFaUhUgIdSOZl-w%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&abauth=52b9ae23Wmqx7erXJf0N1Ko_GqTwFk1yHdU&authuser=0&vps=9&ei=h6-5UsfME8iesgSgqoG4DQ&jsv=472d&sll=38.964214,-77.153549&sspn=0.160701,0.617294&vpsrc=0&mra=ls&via=1,2",
         "displayCode": "495r",
-        "adjustFactor": 1.7
+        "adjustFactor": 1
       },
       {
         "name": "495 via Clara Barton",
         "type": "googlemaps",
         "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Rd,+Bethesda,+MD&daddr=38.970087,-77.159729+to:I-495+S+to:I-495+S+to:1913+Kenwood+Ave,+Alexandria,+VA&output=js&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3B%3BFU4lUgIdb-hl-w%3BFaUhUgIdSOZl-w%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&abauth=52b9ae23Wmqx7erXJf0N1Ko_GqTwFk1yHdU&authuser=0&vps=10&ei=l6-5UousAsW7swTI_4GQAQ&jsv=472d&sll=38.97756,-77.108574&sspn=0.080336,0.308647&vpsrc=6&mra=dpe&mrsp=1&sz=12&via=1,2,3",
         "displayCode": "495c",
-        "adjustFactor": 1.7
+        "adjustFactor": 1
       }
     ]    
   },
