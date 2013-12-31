@@ -157,12 +157,18 @@ def pick2(data):
   first = second = None
   
   for route in data:
-    if first is None or route.mins < first.mins or first.mins <= 0:
+    if route.mins > 0 and (first is None or route.mins < first.mins):
       second = first
       first = route
-    elif second is None or route.mins < second.mins or second.mins <= 0:
+    elif route.mins > 0 and (second is None or route.mins < second.mins):
       second = route
   
+  if first is None:
+    first = RouteData("----", 0)
+  
+  if second is None:
+    second = RouteData("----", 0)
+    
   return first, second
   
 
