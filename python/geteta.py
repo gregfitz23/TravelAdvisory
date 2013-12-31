@@ -17,9 +17,9 @@ ARDUINO_HOST = "http://fitzduino.local"
 ARDUINO_USER = "root"
 ARDUINO_PASSWORD = "Argerald"
 
-TIMESHIFT = datetime.timedelta(hours=19)
+TIMESHIFT = datetime.timedelta(hours=0)
 FIRST_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 20)
-SECOND_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 35)
+SECOND_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 40)
 
 class RouteData(object):
   def __init__(self, code, mins):
@@ -130,7 +130,7 @@ def write_data(key, data):
   # use the opener to fetch a URL
   data = str(data).ljust(4).replace(" ", "%20")
   print top_level_url + "put/" + key + "/" + data
-  opener.open(top_level_url + "put/" + key + "/" + data)
+  #opener.open(top_level_url + "put/" + key + "/" + data)
 
 def cap_minutes(mins):
   if mins > 60:
