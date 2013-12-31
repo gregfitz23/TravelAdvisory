@@ -8,15 +8,18 @@ from HTMLParser import HTMLParser
 
 GOOGLEMAPS_PATTERN = re.compile(r"in current traffic: (\d+) mins", re.I)
 GOOGLEMAPS_SECONDARY_PATTERN = re.compile(r"\\x3cspan\\x3e(\d+) mins\\x3c/span\\x3e")
-GOOGLEMAPS_BUS_PATTERN = re.compile(r"altid=\\\"\d\\\".*title=\\\"(28A|25C|At 5|At 6|22a)\\\".*class=\\\"altroute-info\\\"\\x3e[\W]?(\d+:\d+[a|p]m)")
+GOOGLEMAPS_BUS_PATTERN = re.compile(r"altid=\\\"0\\\".*?title=\\\"(25A|25C|At 5|At 6|22a)\\\".*?class=\\\"altroute-info\\\"\\x3e[\W]?(\d+:\d+[a|p]m).*?class=\\\"dir-altroute-clear\\\"", re.M)
+
+WMATA_TIME_PATTERN = re.compile(r"<span class=\"strong\">at (\d+:\d+[a|p]m)\W+</span>.*?")
+WMATA_ROUTE_PATTERN = re.compile(r"alt=\"Click here to view bus schedule\.\"><!-- mp_trans_disable_start -->(.*)<!-- mp_trans_disable_end -->")
 
 ARDUINO_HOST = "http://fitzduino.local"
 ARDUINO_USER = "root"
 ARDUINO_PASSWORD = "Argerald"
 
-TIMESHIFT = datetime.timedelta(hours=0)
-FIRST_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 15)
-SECOND_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 30)
+TIMESHIFT = datetime.timedelta(hours=19)
+FIRST_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 20)
+SECOND_BUS_SHIFT = datetime.timedelta(hours = 1, minutes = 35)
 
 class RouteData(object):
   def __init__(self, code, mins):
@@ -54,11 +57,61 @@ def get_route_data_from_google_maps_bus(url):
     depart_time = datetime.datetime(now.year, now.month, now.day, depart_time_struct.tm_hour, depart_time_struct.tm_min)
     
     minutes = (depart_time - now).total_seconds()/60
+    print  url
+    print route_name
+    print now
+    print depart_time
     
     return RouteData(route_name, minutes)
   else:
     return RouteData("----", 60)
 
+def get_route_data_from_wmata(arrive_date_time):
+  url = "http://wmata.com/rider_tools/tripplanner/tripplanner.cfm"
+  values = {
+    'show_email':'on',
+    'Minimize':'T',
+    'StreetAddressTo':'S STAFFORD ST & 32ND RD S~38.835890~-77.086451~Arlington~0',
+    'StreetAddressFrom':'7735 old georgetown rd',
+    'StreetAddressTo_Area': '',
+    'StreetAddressFrom_Area': '',
+    'Mode':'A',
+    'WalkDistance':'1.00',
+    'ArrDep':'A',
+    'Time':str(arrive_date_time.time().strftime('%I:%M')),
+    'AMPM':str(arrive_date_time.time().strftime("%p")),
+    'dateMonth':str(arrive_date_time.date().month),
+    'dateDay':str(arrive_date_time.date().day),
+    'dateYear':str(arrive_date_time.date().year),
+    'submit.x':'60',
+    'submit.y':'21',
+    'submit':'adjustTime'
+  }
+  
+  data = urllib.urlencode(values)
+  req = urllib2.Request(url, data)
+  resp = urllib2.urlopen(req).read()
+
+  matches = WMATA_TIME_PATTERN.search(resp)
+  # print resp
+  if matches is not None:
+    now = datetime.datetime.now() + TIMESHIFT
+    
+    depart_time_str = matches.group(1)
+    depart_time_struct = time.strptime(depart_time_str, "%I:%M%p")
+    
+    depart_time = datetime.datetime(now.year, now.month, now.day, depart_time_struct.tm_hour, depart_time_struct.tm_min)
+    minutes = ((depart_time - now).total_seconds()/60) - 6 #offset by time it takes to walk to metro
+    
+    route_name = WMATA_ROUTE_PATTERN.search(resp).group(1)
+    
+    route_name = route_name.replace("DASH BUS", "At").replace("BUS", "")
+    
+    print "now: " + now.strftime("%X")
+    print route_name + ": " + depart_time_str
+    return RouteData(route_name, minutes)
+  else:
+    print resp
 
 def write_data(key, data):
   # create a password manager
@@ -135,12 +188,17 @@ for route in bus_routes:
     now = datetime.datetime.now() + TIMESHIFT
     d0 = now + FIRST_BUS_SHIFT
     d1 = now + SECOND_BUS_SHIFT
-    
-    first_url = route["url"].replace("%%DATE%%", d0.strftime("%x")).replace("%%TIME%%", d0.strftime("%X"))
-    second_url = route["url"].replace("%%DATE%%", d1.strftime("%x")).replace("%%TIME%%", d1.strftime("%X"))
 
-    first = get_route_data_from_google_maps_bus(first_url)
-    second = get_route_data_from_google_maps_bus(second_url)
+    # for wmata
+    first = get_route_data_from_wmata(d0)
+    second = get_route_data_from_wmata(d1)
+
+    ## for google maps
+    #first_url = route["url"].replace("%%DATE%%", d0.strftime("%x")).replace("%%TIME%%", d0.strftime("%X"))
+    #second_url = route["url"].replace("%%DATE%%", d1.strftime("%x")).replace("%%TIME%%", d1.strftime("%X"))
+
+    #first = get_route_data_from_google_maps_bus(first_url)
+    #second = get_route_data_from_google_maps_bus(second_url)
     
     first, second = pick2([first, second])
     
@@ -148,5 +206,5 @@ for route in bus_routes:
     write_data("BUS_0_MINS", cap_minutes(first.mins))
     write_data("BUS_1_CODE", second.code)
     write_data("BUS_1_MINS", cap_minutes(second.mins))
-
+    
 
