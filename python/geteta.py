@@ -130,7 +130,7 @@ def write_data(key, data):
   # use the opener to fetch a URL
   data = str(data).ljust(4).replace(" ", "%20")
   print top_level_url + "put/" + key + "/" + data
-  #opener.open(top_level_url + "put/" + key + "/" + data)
+  opener.open(top_level_url + "put/" + key + "/" + data)
 
 def cap_minutes(mins):
   if mins > 60:
