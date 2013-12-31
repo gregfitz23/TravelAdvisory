@@ -141,7 +141,7 @@ def write_data(key, data):
   # use the opener to fetch a URL
   data = str(data).ljust(4).replace(" ", "%20")
   print top_level_url + "put/" + key + "/" + data
-  opener.open(top_level_url + "put/" + key + "/" + data)
+  #opener.open(top_level_url + "put/" + key + "/" + data)
 
 def cap_minutes(mins):
   if mins > 60:
@@ -157,10 +157,10 @@ def pick2(data):
   first = second = None
   
   for route in data:
-    if first is None or (route.mins < first.mins and route.mins > 0):
+    if first is None or route.mins < first.mins or first.mins == 0:
       second = first
       first = route
-    elif second is None or (route.mins < second.mins and route.mins > 0):
+    elif second is None or route.mins < second.mins or second.mins == 0:
       second = route
   
   return first, second
