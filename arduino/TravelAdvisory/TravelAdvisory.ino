@@ -96,19 +96,14 @@ void loop() {
   do7SegDisplays();
 
   doMinutes();  
-//  digitalWrite(vm1GreenPin, HIGH);
 
   delay(10);
 }
 
 void doModeToggleButton() {
-  Console.print("Toggle:");
-  Console.println(digitalRead(5));
-
   if (modeToggleDebouncer.update()) {
     int value = modeToggleDebouncer.read();
     
-    Console.println(value);
     if (value == HIGH) {
       isBusMode = !isBusMode;
       
@@ -207,6 +202,10 @@ void updateMinutes(int vmPin, int minutes) {
   } else if ((!isBusMode && minutes >= 35 && minutes < 45) || (isBusMode && minutes < 20 && minutes >= 10)) {
     digitalWrite(greenPin, LOW);
     digitalWrite(yellowPin, HIGH);
+    digitalWrite(redPin, LOW);
+  } else if (minutes == 0) { // blink red
+    digitalWrite(greenPin, LOW);
+    digitalWrite(yellowPin, LOW);    
     digitalWrite(redPin, LOW);
   } else {
     digitalWrite(greenPin, LOW);

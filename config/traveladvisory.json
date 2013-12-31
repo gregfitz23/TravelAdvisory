@@ -47,6 +47,28 @@
       {
         "url": "https://maps.google.com/maps?f=d&source=s_d&saddr=7735+Old+Georgetown+Road,+Bethesda,+MD&daddr=1913+Kenwood+Ave,+Alexandria,+VA&hl=en&geocode=FdDlUgIduJNn-ykxcxxzY8m3iTH0Je9Mu3PL1w%3BFe51UAIdXMdn-ylzVT8karG3iTEt07OpJCJXRA&abauth=52c0dca4XEsXo4kWYdHioFSpPeumBYTUhN4&authuser=0&vps=4&output=js&ei=v9zAUv24GtCPsgSAnYHAAw&jsv=472d&sll=38.970087,-77.062912&sspn=0.137199,0.617294&vpsrc=0&dirflg=r&ttype=arr&date=%%DATE%%&time=%%TIME%%&noexp=0&noal=0&sort=def&mra=ls",
         "type": "googlemapsbus"
+      },
+      {
+        "url": "http://wmata.com/rider_tools/tripplanner/tripplanner.cfm",
+        "type": "wmata",
+        "streetAddressTo": "S STAFFORD ST & 32ND RD S~38.835890~-77.086451~Arlington~0",
+        "streetAddressFrom": "7735 old georgetown rd",
+        "initialOffset": -6,
+        "terminalOffset": 8,
+        "adjustFactor": 1,
+        "firstTimeShift": { "hours": 1, "minutes": 20 },
+        "secondTimeShift": { "hours": 1, "minutes": 35 }
+      },
+      {
+        "url": "http://wmata.com/rider_tools/tripplanner/tripplanner.cfm",
+        "type": "wmata",
+        "streetAddressTo": "1913 Kenwood Ave",
+        "streetAddressFrom": "7735 old georgetown rd",
+        "initialOffset": -6,
+        "terminalOffset": 8,
+        "adjustFactor": 1,
+        "firstTimeShift": { "hours": 1, "minutes": 20 },
+        "secondTimeShift": { "hours": 1, "minutes": 35 }
       }
     ]
   }
