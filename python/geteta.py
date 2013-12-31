@@ -112,6 +112,7 @@ def get_route_data_from_wmata(arrive_date_time):
     return RouteData(route_name, minutes)
   else:
     print resp
+    return RouteData("----", 0)
 
 def write_data(key, data):
   # create a password manager
